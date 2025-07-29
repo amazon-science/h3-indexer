@@ -1,0 +1,34 @@
+name: "test"
+version: "1.0.0"
+h3_resolution: 4
+output_s3_path: 'my-bucket'
+inputs:
+  points:  
+    type: "vector"
+    s3_path: "my-bucket/data/my_points.shp"
+    unique_id: "geoid"
+    geometry_type: "POINT"
+    geometry_column_name: "geometry"
+    method: "WITHIN"
+    input_columns:
+      - "value"
+  lines:  
+    type: "vector"
+    glue_catalog_database_name: "my_database"
+    glue_catalog_table_name: "my_table"
+    where_clause: "id == '001'"
+    unique_id: "id"
+    geometry_type: "LINE"
+    geometry_column_name: "geom"
+    method: "PCT_LENGTH"
+    input_columns:
+      - "value"
+  polygons:  
+    type: "vector"
+    s3_path: "my-bucket/data/my_polygons.parquet"
+    unique_id: "id"
+    geometry_type: "LINE"
+    geometry_column_name: "geometry"
+    method: "PCT_AREA"
+    input_columns:
+      - "attribute"
