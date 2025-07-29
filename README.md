@@ -57,22 +57,23 @@ You need to include the following environment variables in a .env file. You can 
 
 Required version is Python 3.10. You will need to install the Python libraries in the requirements.txt file and update the Python environment variables to the path of your interpreter.
 
-### S3
-You'll need to have credentials and proper permissions set up for the files in the S3 bucket included in your config.
+### S3 & Glue Catalog
+
+You'll need to have proper credentials and permissions set up to access the files in the S3 bucket or the tables in the Glue Catalog that are included in your config.
 
 ### Debugging
 
-There is a sample yaml config in the sample_configs directory. Here's a sample launch.json file to use for debugging with a test config:
+There is a sample_job.yaml in the configs directory. Here's a sample launch.json file to use for debugging with a test config:
 
 ```
 {
     "name": "main",
     "type": "debugpy",
     "request": "launch",
-    "program": "/H3-Indexer/src/H3-Indexer/src/main.py",
+    "program": "path-to/h3-indexer/src/h3-indexer/src/main.py",
     "console": "integratedTerminal",
-    "args": ["--yaml-path", "/H3-Indexer/src/H3-Indexer/configs/test_job.yaml"],
-    "envFile": "/H3-Indexer/src/H3-Indexer/.env"
+    "args": ["--yaml-path", "path-to/h3-indexer/src/h3-indexer/configs/sample_job.yaml"],
+    "envFile": "path-to/h3-indexer/src/h3-indexer/.env"
 }
 ```
 
