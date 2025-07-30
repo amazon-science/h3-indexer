@@ -94,13 +94,13 @@ def add_wkt_geometry(
     :param geom_col_data_type: Geometry column data type.
     :return: PySpark DataFrame with WKT geometry column.
     """
-    # if geometry is already in GeoJSON format, no need for a new column
+    # if geometry is already in WKT format, no need for a new column
     if geom_col_data_type == GeomColDataTypeEnum.WKT:
         return input_df.withColumnRenamed(geometry_col, GEOM_WKT_COL_NAME)
 
     elif geom_col_data_type == GeomColDataTypeEnum.GEOJSON:
         df_with_wkt = input_df.withColumn(
-            GEOM_WKT_COL_NAME, ST_AsText(ST_GeomFromGeoJSON(col(geometry_col)))
+            GEOM_WKT_COL_NAME, ST_AsText(ST_GeomFromGeoJSON(GEOJSON_COL_NAME))
         )
 
     elif geom_col_data_type in (GeomColDataTypeEnum.STRING_WKB, GeomColDataTypeEnum.BINARY_WKB):
