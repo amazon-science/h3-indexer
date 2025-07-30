@@ -21,7 +21,6 @@ aws-c-s3=0.7.11
 aws-c-sdkutils=0.2.3
 aws-checksums=0.2.3
 aws-crt-cpp=0.31.0
-aws-glue-libs=4.0.0
 aws-sdk-cpp=1.11.528
 blas=2.131
 blas-devel=3.9.0

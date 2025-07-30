@@ -64,7 +64,7 @@ conda create -n h3 python=3.10
 conda activate h3
 ```
 
-First, with your `h3` python environment activated, install the aws-glue-libs:
+First, with the `h3` python environment activated, install aws-glue-libs:
 ```
 cd ~/h3-indexer-env/aws-glue-libs
 python -m pip install -e .
@@ -73,6 +73,13 @@ python -m pip install -e .
 Then, cd back into the h3-indexer repository and run:
 ```
 conda install -c conda-forge --file requirements.txt
+```
+
+Ensure that all requirements installed successfully by running (with the `h3` python environment activated):
+```
+python
+>> import awsglue
+>> import pyspark
 ```
 
 ### S3 & Glue Catalog
