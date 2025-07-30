@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Maximum file size in bytes (50MB = 52428800 bytes)
+MAX_SIZE=52428800
+
+# Check all files being committed
+for file in $(git diff --cached --name-only); do
+    if [ -f "$file" ]; then
+        file_size=$(stat -c%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null)
+        if [ "$file_size" -gt "$MAX_SIZE" ]; then
+            echo "Error: File '$file' is $(($file_size / 1024 / 1024))MB, which exceeds the $(($MAX_SIZE / 1024 / 1024))MB limit."
+            echo "Please use Git LFS for large files or reduce the file size."
+            exit 1
+        fi
+    fi
+done
+
+exit 0
