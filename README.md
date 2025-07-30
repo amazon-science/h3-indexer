@@ -18,13 +18,14 @@ The h3-indexer contains 3 stages, and users can [provide command line arguments]
 - YAML & JSON-based configuration supported
 
 ## Developer Setup
+The developer setup is currently compatible with ARM64 only (not compatible with x86_64).
 
 ### Versions:
 This tool requires the following versions:
-Python: 3.10
-Glue: 4.0
-Spark: 3.3.0
-Apache Sedona: 1.7.1
+- Python: 3.10
+- Glue: 4.0
+- Spark: 3.3.0
+- Apache Sedona: 1.7.1
 
 ### Setup
 
@@ -35,7 +36,7 @@ chmod +x scripts/env_setup.sh
 source ./scripts/env_setup.sh
 ```
 
-When this executable finishes running, it will print out the environment variable paths to set in your .env file - for example:
+When this executable finishes running, it will print out the environment variable paths that you should set in your .env file - for example:
 ```
 Your SPARK_HOME path is <path>
 Your GLUE_JARS path is <path>
@@ -56,6 +57,23 @@ You need to include the following environment variables in a .env file. You can 
 ### Python
 
 Required version is Python 3.10. You will need to install the Python libraries in the requirements.txt file and update the Python environment variables to the path of your interpreter.
+
+Here are example commands for Python environment setup using conda:
+```
+conda create -n h3 python=3.10
+conda activate h3
+```
+
+First, with your `h3` python environment activated, install the aws-glue-libs:
+```
+cd ~/h3-indexer-env/aws-glue-libs
+python -m pip install -e .
+```
+
+Then, cd back into the h3-indexer repository and run:
+```
+conda install -c conda-forge --file requirements.txt
+```
 
 ### S3 & Glue Catalog
 

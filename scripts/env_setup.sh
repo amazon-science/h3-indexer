@@ -13,11 +13,24 @@ export H3=$HOME/h3-indexer-env
 cd $H3
 mkdir $H3/spark-3.3.0-amzn-1-bin-3.3.3-amzn-0
 wget https://aws-glue-etl-artifacts.s3.amazonaws.com/glue-4.0/spark-3.3.0-amzn-1-bin-3.3.3-amzn-0.tgz
-tar xzvf spark-3.3.0-amzn-1-bin-3.3.3-amzn-0.tgz -C ${H3}/spark-3.3.0-amzn-1-bin-3.3.3-amzn-0
+tar xzvf spark-3.3.0-amzn-1-bin-3.3.3-amzn-0.tgz -C $H3/spark-3.3.0-amzn-1-bin-3.3.3-amzn-0
 
 # install aws-glue-libs
 cd $H3
 git clone https://github.com/awslabs/aws-glue-libs.git
+
+# install maven
+cd $H3
+curl https://aws-glue-etl-artifacts.s3.amazonaws.com/glue-common/apache-maven-3.6.0-bin.tar.gz --output apache-maven-3.6.0-bin.tar.gz
+tar xvzf apache-maven-3.6.0-bin.tar.gz
+export M2_HOME=$H3/apache-maven-3.6.0
+export PATH=$M2_HOME/bin:$PATH
+
+# install Java
+sudo yum install java-1.8.0-openjdk
+JAVAPATH=$(ls -d /usr/lib/jvm/java-1.8.0-openjdk-1.8.0*)
+
+# setup aws-glue-libs
 cd $H3/aws-glue-libs
 ./bin/gluepyspark || true
 rm $H3/aws-glue-libs/jarsv1/*log4j*
@@ -25,10 +38,6 @@ rm $H3/aws-glue-libs/jarsv1/*log4j*
 # install Athena JDBC
 cd $H3/aws-glue-libs/jarsv1/
 wget https://downloads.athena.us-east-1.amazonaws.com/drivers/JDBC/SimbaAthenaJDBC-2.2.1.1000/AthenaJDBC42-2.2.1.1000.jar
-
-# install Java
-sudo yum install java-1.8.0-openjdk
-JAVAPATH=$(ls -d /usr/lib/jvm/java-1.8.0-openjdk-1.8.0*)
 
 # export all environment variables
 export SPARK_HOME=$H3/spark-3.3.0-amzn-1-bin-3.3.3-amzn-0/spark
