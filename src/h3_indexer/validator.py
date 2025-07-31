@@ -63,13 +63,12 @@ def validate_input_columns_are_numeric(df: DataFrame, input_columns: List) -> bo
 
 def validate_config(job: Job, spark: SparkSession) -> Job:
     """
-    Empty function that will eventually validate the config.
+    Validate the config.
 
     :param job: Job config.
     :param spark: Spark session.
     :return: Job config.
     """
-    job.update_status(JobStatus.VALIDATED)
 
     for input_name, input_config in job.inputs.items():
         if input_config.s3_path:
@@ -106,5 +105,7 @@ def validate_config(job: Job, spark: SparkSession) -> Job:
 
         # cache df to make future ops run faster
         input_config.df = cache_df(input_config.df)
+
+    job.update_status(JobStatus.VALIDATED)
 
     return job
