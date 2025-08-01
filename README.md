@@ -10,9 +10,9 @@ The h3-indexer contains 3 stages, and users can [provide command line arguments]
 ## Features
 - Supports vector point, line & polygon data types
 - Supports the following inputs:
-  - Parquet files & shapefiles in S3
-  - Glue catalog tables
-- Outputs are written to S3 in parquet format
+  - Parquet files & shapefiles in AWS S3
+  - AWS Glue catalog tables
+- Outputs are written to AWS S3 in parquet format
 - Configurable [H3 resolution](https://h3geo.org/docs/core-library/restable/) (3-10)
 - PySpark for H3 indexing operations using Apache Sedona
 - YAML & JSON-based configuration supported
@@ -23,7 +23,7 @@ The developer setup is currently compatible with ARM64 only (not compatible with
 ### Versions:
 This tool requires the following versions:
 - Python: 3.10
-- Glue: 4.0
+- AWS Glue: 4.0
 - Spark: 3.3.0
 - Apache Sedona: 1.7.1
 
@@ -82,9 +82,9 @@ python
 >> import pyspark
 ```
 
-### S3 & Glue Catalog
+### AWS S3 & AWS Glue Catalog
 
-You'll need to have proper credentials and permissions set up to access the files in the S3 bucket or the tables in the Glue Catalog that are included in your config.
+You'll need to have proper credentials and permissions set up to access the files in the S3 bucket or the tables in the AWS Glue Catalog that are included in your config.
 
 ### Debugging
 
@@ -128,23 +128,23 @@ The YAML configuration file defines the job parameters including input data sour
 - `name`: Project name (string)
 - `version`: Version number in semantic format #.#.# (string)
 - `h3_resolution`: H3 resolution level, supported range 3-10 (integer)
-- `output_s3_path`: S3 path for output storage (string)
+- `output_s3_path`: AWS S3 path for output storage (string)
 - `inputs`: Dictionary of input data sources. Each input in the `inputs` dictionary can either be a Vector or Raster input type. See below for more details on required parameters for each input type.
 
 ##### Vector Data
 For vector inputs (type: "vector"):
 - `type`: Must be "vector"
-- `glue_catalog_database_name`: Glue Catalog database name - must be provided with `glue_catalog_table_name`.
-- `glue_catalog_table_name`: Glue Catalog table name - must be provided with `glue_catalog_database_name`.
-- `where_clause`: SQL where clause to filter the Glue catalog table. Only applicable with Glue catalog source.
-- `s3_path`: Path to input data in S3
+- `glue_catalog_database_name`: AWS Glue Catalog database name - must be provided with `glue_catalog_table_name`.
+- `glue_catalog_table_name`: AWS Glue Catalog table name - must be provided with `glue_catalog_database_name`.
+- `where_clause`: SQL where clause to filter the AWS Glue catalog table. Only applicable with AWS Glue catalog source.
+- `s3_path`: Path to input data in AWS S3
 - `unique_id`: Column name containing unique identifier
 - `geometry_type`: Type of geometry ("POINT", "LINE", or "POLYGON")
 - `geometry_column_name`: Name of the geometry column.
 - `method`: Processing method ("PCT_LENGTH" for lines, "PCT_AREA" for polygons)
 - `input_columns`: List of columns to include in output
 
-When providing a Glue Catalog table, both `glue_catalog_database_name` and `glue_catalog_table_name` must be provided.  These variables are mutually exclusive to `s3_path`. So when providing an S3 path, you cannot also include Glue Catalog parameters. And when providing Glue Catalog parameters, you cannot also include an S3 path.
+When providing an AWS Glue Catalog table, both `glue_catalog_database_name` and `glue_catalog_table_name` must be provided.  These variables are mutually exclusive to `s3_path`. So when providing an AWS S3 path, you cannot also include AWS Glue Catalog parameters. And when providing AWS Glue Catalog parameters, you cannot also include an AWS S3 path.
 
 For POINT inputs only, the `geometry_column_name` parameter can be replaced with these 2 parameters:
 - `lat_column_name`: Name of the latitude column.
