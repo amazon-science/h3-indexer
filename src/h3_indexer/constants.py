@@ -1,9 +1,5 @@
 """Constants for easy management."""
 
-import os
-
-SQL_PATH = os.path.join(os.getcwd(), "src", "h3_indexer", "sql")
-
 DEFAULT_H3_RES = 6
 
 # column name of the geojson geometry column
