@@ -9,7 +9,7 @@ from pyspark.sql.types import DecimalType, DoubleType, FloatType, IntegerType, L
 from h3_indexer.constants import GEOM_WKT_COL_NAME
 from h3_indexer.data_model.job import Job, JobStatus
 from h3_indexer.spark.spark import cache_df, read_s3_file_to_spark
-from h3_indexer.utils.geospatial import remove_invalid_geometries
+from h3_indexer.utils.geospatial import fix_and_remove_invalid_geometries
 
 
 def validate_unique_id(df: DataFrame, unique_id: list[str]) -> bool:
@@ -69,7 +69,6 @@ def validate_config(job: Job, spark: SparkSession) -> Job:
     :param spark: Spark session.
     :return: Job config.
     """
-
     for input_name, input_config in job.inputs.items():
         if input_config.s3_path:
             input_df = read_s3_file_to_spark(spark, input_config.s3_path)
@@ -83,11 +82,14 @@ def validate_config(job: Job, spark: SparkSession) -> Job:
                 .option("driver", "com.simba.athena.jdbc.Driver")
                 .option(
                     "AwsCredentialsProviderClass",
-                    "com.simba.athena.amazonaws.auth.DefaultAWSCredentialsProviderChain"
+                    "com.simba.athena.amazonaws.auth.DefaultAWSCredentialsProviderChain",
                 )
                 .option("url", "jdbc:awsathena://athena.us-east-1.amazonaws.com:443")
                 .option("WorkGroup", "ReadOnlyWorkGroup")
-                .option("query", f'SELECT * FROM {input_config.glue_catalog_database_name}."{input_config.glue_catalog_table_name}" {where_clause}')
+                .option(
+                    "query",
+                    f'SELECT * FROM {input_config.glue_catalog_database_name}."{input_config.glue_catalog_table_name}" {where_clause}',
+                )
                 .load()
             )
 
@@ -101,7 +103,9 @@ def validate_config(job: Job, spark: SparkSession) -> Job:
         input_config.initialize_input_df(input_df)
 
         # remove nulls and invalid geometries
-        input_config.df = remove_invalid_geometries(input_config.df, GEOM_WKT_COL_NAME, input_name)
+        input_config.df = fix_and_remove_invalid_geometries(
+            input_config.df, GEOM_WKT_COL_NAME, input_name
+        )
 
         # cache df to make future ops run faster
         input_config.df = cache_df(input_config.df)
