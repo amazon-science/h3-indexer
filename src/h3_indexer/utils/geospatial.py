@@ -137,9 +137,9 @@ def add_h3_area_column(
     return df
 
 
-def remove_invalid_geometries(df: DataFrame, wkt_geom_col: str, name: str) -> DataFrame:
+def fix_and_remove_invalid_geometries(df: DataFrame, wkt_geom_col: str, name: str) -> DataFrame:
     """
-    Remove rows with invalid geometries from the DataFrame.
+    Fix invalid geometries, then remove rows with null or invalid geometries from the DataFrame.
 
     :param df: PySpark DataFrame containing a 'geom_wkt' column.
     :param wkt_geom_col: Name of WKT geometry column.
@@ -149,8 +149,10 @@ def remove_invalid_geometries(df: DataFrame, wkt_geom_col: str, name: str) -> Da
     # First remove nulls
     df_no_nulls = df.filter(col(wkt_geom_col).isNotNull())
 
-    # filter out invalid geometries
-    df_valid = df_no_nulls.filter(expr(f"ST_IsValid(ST_GeomFromWKT({wkt_geom_col}))"))
+    # fix invalid geometries
+    df_valid = df_no_nulls.withColumn(
+        wkt_geom_col, expr(f"ST_AsText(ST_MakeValid(ST_GeomFromWKT({wkt_geom_col})))")
+    ).filter(expr(f"ST_IsValid(ST_GeomFromWKT({wkt_geom_col}))"))
 
     # Log the number of invalid geometries
     total_count = df.count()
