@@ -2,7 +2,9 @@
 
 The **h3-indexer** is an open source package for indexing geospatial data using PySpark, Apache Sedona and Uber's open source H3 hierarchical spatial indexing system. The h3-indexer maps any number of vector-type geospatial data sets to H3 grids for efficient spatial analysis and querying.
 
-The h3-indexer contains 3 stages, and users can [provide command line arguments](#usage) to run the stages one at a time, or altogether. 
+![H3 Data Flow](data_flow.png)
+
+The h3-indexer contains 3 stages, and users can [provide command line arguments](#usage) to run the stages one at a time, or all together. 
 1. [Validator](#input-requirements)
 2. [Indexer](#methodology-indexer)
 3. [Resolver](#methodology-resolver)
