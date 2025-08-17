@@ -84,6 +84,11 @@ python
 >> import pyspark
 ```
 
+You can get the path of your python interpreter for the `.env` file environment variables (`PYTHONPATH`, `PYSPARK_PYTHON`, `PYSPARK_DRIVER_PYTHON`) by running:
+```
+which python
+```
+
 ### AWS S3 & AWS Glue Catalog
 
 You'll need to have proper credentials and permissions set up to access the files in the S3 bucket or the tables in the AWS Glue Catalog that are included in your config.
