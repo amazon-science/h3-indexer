@@ -27,8 +27,17 @@ export M2_HOME=$H3/apache-maven-3.6.0
 export PATH=$M2_HOME/bin:$PATH
 
 # install Java
-sudo yum install java-1.8.0-openjdk
-JAVAPATH=$(ls -d /usr/lib/jvm/java-1.8.0-openjdk-1.8.0*)
+if command -v yum >/dev/null 2>&1; then
+  sudo yum install -y java-1.8.0-openjdk
+  JAVAPATH=$(ls -d /usr/lib/jvm/java-1.8.0-openjdk-1.8.0*)
+elif command -v apt-get >/dev/null 2>&1; then
+  sudo apt-get update
+  sudo apt-get install -y openjdk-8-jdk
+  JAVAPATH=$(ls -d /usr/lib/jvm/java-8-openjdk-* | head -n 1)
+else
+  echo "Error installing Java 8."
+  exit 1
+fi
 
 # setup aws-glue-libs
 cd $H3/aws-glue-libs

@@ -20,7 +20,7 @@ The h3-indexer contains 3 stages, and users can [provide command line arguments]
 - YAML & JSON-based configuration supported
 
 ## Developer Setup
-The developer setup is currently compatible with ARM64 only (not compatible with x86_64).
+Developer setup is currently supported only on Linux ARM64 machines (not on x86_64 or macOS).
 
 ### Versions:
 This tool requires the following versions:
