@@ -27,7 +27,7 @@ inputs:
     type: "vector"
     s3_path: "my-bucket/data/my_polygons.parquet"
     unique_id: "id"
-    geometry_type: "LINE"
+    geometry_type: "POLYGON"
     geometry_column_name: "geometry"
     method: "PCT_AREA"
     input_columns:
