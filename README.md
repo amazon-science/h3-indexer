@@ -20,7 +20,7 @@ The h3-indexer contains 3 stages, and users can [provide command line arguments]
 - YAML & JSON-based configuration supported
 
 ## Developer Setup
-The developer setup is currently compatible with ARM64 only (not compatible with x86_64).
+Developer setup is currently supported only on Linux ARM64 machines (not on x86_64 or macOS).
 
 ### Versions:
 This tool requires the following versions:
@@ -82,6 +82,11 @@ Ensure that all requirements installed successfully by running (with the `h3` py
 python
 >> import awsglue
 >> import pyspark
+```
+
+You can get the path of your python interpreter for the `.env` file environment variables (`PYTHONPATH`, `PYSPARK_PYTHON`, `PYSPARK_DRIVER_PYTHON`) by running:
+```
+which python
 ```
 
 ### AWS S3 & AWS Glue Catalog
